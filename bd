@@ -1,0 +1,44 @@
+CREATE DATABASE exemplo_banco_dados;
+
+USE exemplo_banco_dados;
+
+CREATE TABLE usuarios (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL
+);
+
+INSERT INTO usuarios (nome, email, senha) VALUES
+    ('João', 'joao@teste.com', '123456'),
+    ('Maria', 'maria@teste.com', 'senha123'),
+    ('Pedro', 'pedro@teste.com', '123456');
+
+CREATE TABLE posts (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    titulo VARCHAR(50) NOT NULL,
+    conteudo TEXT NOT NULL,
+    data_publicacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    autor_id INT NOT NULL,
+    FOREIGN KEY (autor_id) REFERENCES usuarios(id)
+);
+
+INSERT INTO posts (titulo, conteudo, autor_id) VALUES
+    ('Como criar um banco de dados', 'Este é um tutorial sobre como criar um banco de dados usando SQL.', 1),
+    ('As vantagens de usar SQL', 'SQL é uma linguagem de consulta padrão que oferece muitas vantagens para os desenvolvedores de software.', 2),
+    ('Melhores práticas para otimizar um banco de dados', 'Neste post, apresentamos algumas das melhores práticas para otimizar o desempenho de um banco de dados.', 3);
+
+CREATE TABLE comentarios (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    conteudo TEXT NOT NULL,
+    data_publicacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    autor_id INT NOT NULL,
+    post_id INT NOT NULL,
+    FOREIGN KEY (autor_id) REFERENCES usuarios(id),
+    FOREIGN KEY (post_id) REFERENCES posts(id)
+);
+
+INSERT INTO comentarios (conteudo, autor_id, post_id) VALUES
+    ('Ótimo tutorial, me ajudou muito!', 2, 1),
+    ('Concordo, SQL é realmente poderoso.', 3, 2),
+    ('Excelentes dicas, obrigado por compartilhar.', 1, 3);
